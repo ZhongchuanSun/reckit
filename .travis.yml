@@ -25,9 +25,10 @@ script:
   - docker run --rm -e PLAT=$PLAT -e PYPI_TOKEN=$PYPI_TOKEN -v `pwd`:/io $DOCKER_IMAGE /io/tools/travis_linux_steps.sh
 
 deploy:
-  provider: testpypi
+  provider: pypi
   username: "__token__"
-  password: $PYPI_TOKEN
+  password:
+    secure: $PYPI_TOKEN
   distributions: sdist bdist_wheel
 #  server:
   skip_existing: true
