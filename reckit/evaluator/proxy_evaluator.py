@@ -3,7 +3,7 @@
 """
 from util import typeassert
 from .abstract_evaluator import AbstractEvaluator
-from .src.uni_evaluator import UniEvaluator
+from .uni_evaluator import UniEvaluator
 from .grouped_evaluator import GroupedEvaluator
 
 

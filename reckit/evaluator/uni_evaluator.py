@@ -2,10 +2,10 @@
 @author: Zhongchuan Sun
 """
 import numpy as np
-from util import DataIterator
+from data import DataIterator
 from util import typeassert
-from .cpp_evaluator import CPPEvaluator
-from util.cython.tools import float_type, is_ndarray
+from .src import CPPEvaluator
+from util import float_type, is_ndarray
 from util import pad_sequences
 
 

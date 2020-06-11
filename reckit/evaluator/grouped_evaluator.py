@@ -6,7 +6,7 @@ import numpy as np
 from collections import OrderedDict
 import pandas as pd
 from .abstract_evaluator import AbstractEvaluator
-from .src.uni_evaluator import UniEvaluator
+from .uni_evaluator import UniEvaluator
 
 
 class GroupedEvaluator(AbstractEvaluator):
