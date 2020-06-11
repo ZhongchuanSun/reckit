@@ -8,7 +8,6 @@ cd io/
 for PYBIN in /opt/python/*/bin; do
     if [[ ${PYBIN} =~ "3" ]]
     then
-        pip
         echo ${PYBIN}
         PIP_EXE="${PYBIN}/pip"
         ${PIP_EXE} install -r requirements.txt
