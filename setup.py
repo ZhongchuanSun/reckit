@@ -100,16 +100,16 @@ def setup_package():
             "License :: OSI Approved :: MIT License",
             "Intended Audience :: Science/Research",
             "Intended Audience :: Developers"
-            "Programming Language :: Python :: 3.6",
-            "Programming Language :: Python :: 3.7",
-            "Programming Language :: Python :: 3.8",
-            "Programming Language :: C"
-            "Programming Language :: Python :: Implementation :: CPython"
-            "Operating System :: Microsoft :: Windows",
-            "Operating System :: Unix",
-            "Operating System :: MacOS",
-            "Topic :: Software Development",
-            "Topic :: Scientific/Engineering"
+            "Programming Language :: Python :: 3.6"
+            # "Programming Language :: Python :: 3.7",
+            # "Programming Language :: Python :: 3.8",
+            # "Programming Language :: C"
+            # "Programming Language :: Python :: Implementation :: CPython"
+            # "Operating System :: Microsoft :: Windows",
+            # "Operating System :: Unix",
+            # "Operating System :: MacOS",
+            # "Topic :: Software Development",
+            # "Topic :: Scientific/Engineering"
         ],
         python_requires='>=3.6',
     )

@@ -1,34 +1,28 @@
 language: python
 notifications:
   email: false
-
 matrix:
   include:
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_i686
-           PLAT=manylinux2010_i686
-    - sudo: required
-      services:
-        - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64
-           PLAT=manylinux2010_x86_64
-
+  - sudo: required
+    services:
+    - docker
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_i686 PLAT=manylinux2010_i686
+  - sudo: required
+    services:
+    - docker
+    env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux2010_x86_64
 before_install:
-  - chmod 755 tools/travis_linux_steps.sh
-
+- chmod 755 tools/travis_linux_steps.sh
 install:
-  - docker pull $DOCKER_IMAGE
-
+- docker pull $DOCKER_IMAGE
 script:
-  - docker run --rm -e PLAT=$PLAT -e PYPI_TOKEN=$PYPI_TOKEN -v `pwd`:/io $DOCKER_IMAGE /io/tools/travis_linux_steps.sh
-
+- docker run --rm -e PLAT=$PLAT -e PYPI_TOKEN=$PYPI_TOKEN -v `pwd`:/io $DOCKER_IMAGE
+  /io/tools/travis_linux_steps.sh
 deploy:
   provider: pypi
-  username: "__token__"
-  password: "pypi-AgEIcHlwaS5vcmcCJDMwM2I0NThlLTcyMTktNDg0ZS04YmI2LTczZWJmNjlmZTZiMwACJXsicGVybWlzc2lvbnMiOiAidXNlciIsICJ2ZXJzaW9uIjogMX0AAAYgRoQTP7Prdg_s9__Bq6fLRmNO3PQmlBRRuCxML2bmuBc"
-#    secure: $PYPI_TOKEN
+  username: __token__
   distributions: sdist bdist_wheel
-#  server:
   skip_existing: true
+env:
+  global:
+    secure: UdhH0FW0kQ1DFBvfPp4/u75Eg0ytgC+gXIeUGb2EIGDUEmJLIql2fxcrKojf+uYxlhb1U7HsR5d+EZUTVTbZ8RM3nIeUhHzsEU3gtGth49B3Xqm5KOaaf0GxuCgcUPzOpRzCUhi6LC549d1ed1abqNSbKW6syaq/0DpKGOc2SvNXR4q2u3zqaOKsQ2sG2MEYnakZgS7sXuq4UkPsMS1OfvAtWXcglVD1fEGW3RBI3rPy99uHOm48bRjhHIW7C+wl0L4hMSoy4VM7C3BaY13U+izDcWfeEkO0qQyl1GusN6QxXbheYj85CbwU6qoH+sgdtNo1ofAxDrTPNDGVwx/90j+uaqCwsvKujnj3ckhvXian2gOZf4LcNMLDvByT0uWRsvpY2ZePLTYW65t+A7oFvClSpJH+fuarlkdjHWkgU9Y75hprV5VXtgrn+M/EWUy9MiucUsBA31JCEj4D7lbjZdgh8QGX9bq63B2kNDkNhRJfSGYuRyDVCr67+DdFT7ByOM9svs6/OeSqxuZO/aI20po21YiszRzWKS/DvB5ZIqCYCrMMrvXpOhdaEpsfzm39vSkQOHMsrklyNrmxI/U3plWT85YdWICZGynIMSHMLWIXIc+StQuAUMmH7JPWZsz6xSr422JgcuxeEe1T9F8O7adahdk7xbGkCuppXO3O/Wo=
