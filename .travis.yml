@@ -27,8 +27,8 @@ script:
 deploy:
   provider: pypi
   username: "__token__"
-  password:
-    secure: $PYPI_TOKEN
+  password: "pypi-AgEIcHlwaS5vcmcCJDMwM2I0NThlLTcyMTktNDg0ZS04YmI2LTczZWJmNjlmZTZiMwACJXsicGVybWlzc2lvbnMiOiAidXNlciIsICJ2ZXJzaW9uIjogMX0AAAYgRoQTP7Prdg_s9__Bq6fLRmNO3PQmlBRRuCxML2bmuBc"
+#    secure: $PYPI_TOKEN
   distributions: sdist bdist_wheel
 #  server:
   skip_existing: true
