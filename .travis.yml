@@ -16,7 +16,7 @@ matrix:
            PLAT=manylinux2010_x86_64
 
 before_install:
-  - chmod 755 travis_linux_steps.sh
+  - chmod 755 tools/travis_linux_steps.sh
 
 install:
   - docker pull $DOCKER_IMAGE
@@ -27,8 +27,7 @@ script:
 deploy:
   provider: testpypi
   username: "__token__"
-  password:
-    secure: $PYPI_TOKEN
+  password: $PYPI_TOKEN
   distributions: "sdist bdist_wheel"
 #  server:
   skip_existing: true
