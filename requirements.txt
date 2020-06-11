@@ -1,0 +1,4 @@
+numpy>=1.17
+Cython>=0.29.14
+setuptools>=41.6.0
+wheel>=0.33.6

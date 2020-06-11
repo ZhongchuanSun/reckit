@@ -1,0 +1,7 @@
+recursive-include reckit *.pyx
+recursive-include reckit *.c
+recursive-include reckit *.cpp
+recursive-include reckit *.h
+recursive-include reckit *.hpp
+recursive-exclude */.idea
+prune */__pycache__

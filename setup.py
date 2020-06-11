@@ -80,11 +80,40 @@ def setup_package():
     extensions = get_extensions(".")
     include_dirs = get_include_dirs(".")
     module_list = cythonize(extensions, language="c++", annotate=False)
-    setup(name="reckit",
-          ext_modules=module_list,
-          include_dirs=include_dirs,
-          packages=setuptools.find_packages()
-          )
+    with open("README.md", "r") as fh:
+        long_description = fh.read()
+
+    metadata = dict(
+        name="reckit",  # Replace with your own username
+        version="0.1.0",
+        author="ZhongchuanSun",
+        author_email="zhongchuansun@gmail.com",
+        description="A toolkit for recommender systems",
+        long_description=long_description,
+        long_description_content_type="text/markdown",
+        url="https://github.com/ZhongchuanSun/reckit",
+        packages=setuptools.find_packages(),
+        include_dirs=include_dirs,
+        ext_modules=module_list,
+        platforms=["Windows", "Linux", "Mac OS-X", "Unix"],
+        classifiers=[
+            "License :: OSI Approved :: MIT License",
+            "Intended Audience :: Science/Research",
+            "Intended Audience :: Developers"
+            "Programming Language :: Python :: 3.6",
+            "Programming Language :: Python :: 3.7",
+            "Programming Language :: Python :: 3.8",
+            "Programming Language :: C"
+            "Programming Language :: Python :: Implementation :: CPython"
+            "Operating System :: Microsoft :: Windows",
+            "Operating System :: Unix",
+            "Operating System :: MacOS",
+            "Topic :: Software Development",
+            "Topic :: Scientific/Engineering"
+        ],
+        python_requires='>=3.6',
+    )
+    setup(**metadata)
 
 
 if __name__ == '__main__':
