@@ -13,6 +13,7 @@ for PYBIN in /opt/python/*/bin; do
         ${PIP_EXE} install -r requirements.txt
         PYTHON_EXE="${PYBIN}/python"
         ${PYTHON_EXE} setup.py sdist bdist_wheel
+        echo ${PYPI_TOKEN}
         echo "__token__\r${PYPI_TOKEN}\r" | ${PYTHON_EXE} -m twine upload --repository testpypi dist/*
     fi
 
