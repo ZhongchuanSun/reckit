@@ -4,19 +4,18 @@ image: Visual Studio 2015
 clone_folder: C:\prj\test-appveyor
 
 build_script:
-  - ps: $RECKIT_VER=0.1.0
   - ps: cd C:\prj\test-appveyor
   - ps: tools\appveyor_win_build_whl.ps1
 
 after_build:
-  - ps: 7z a win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip dist\*
+  - ps: 7z a win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip dist\*
 
-artifacts:
-  - path: win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip
+#artifacts:
+#  - path: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
 
 deploy:
-  release: win_whl-v%RECKIT_VER%-b%TRAVIS_BUILD_NUMBER%
-  artifact: win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip
+  release: win_whl-v0.1.0-b%APPVEYOR_BUILD_NUMBER%
+  artifact: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
   prerelease: true
   provider: GitHub
   auth_token:
