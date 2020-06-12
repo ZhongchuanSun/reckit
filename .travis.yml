@@ -8,23 +8,35 @@ matrix:
     - sudo: required
       services:
         - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_i686 PLAT=manylinux2010_i686
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_i686 PLAT=manylinux2010_i686 OS=linux
     - sudo: required
       services:
         - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux2010_x86_64
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux2010_x86_64 OS=linux
+    - os: osx
+      python: 3.6
+      env: PLAT=osx_py36 OS=osx
+    - os: osx
+      python: 3.7
+      env: PLAT=osx_py37 OS=osx
+    - os: osx
+      python: 3.8
+      env: PLAT=osx_py38 OS=osx
 
 before_install:
   - export RECKIT_VER=0.1.0
-  - export TRAVIS_TAG="linux_whl-v${RECKIT_VER}-b${TRAVIS_BUILD_NUMBER}"
-  - export ZIP_FILE="linux_whl-v${RECKIT_VER}-${PLAT}-b${TRAVIS_BUILD_NUMBER}.tar.gz"
+  - export TRAVIS_TAG="${OS}_whl-v${RECKIT_VER}-b${TRAVIS_BUILD_NUMBER}"
+  - export ZIP_FILE="${OS}_whl-v${RECKIT_VER}-${PLAT}-b${TRAVIS_BUILD_NUMBER}.tar.gz"
   - chmod 755 tools/travis_linux_build_whl.sh
+  - chmod 755 tools/travis_osx_build_whl.sh
+  - chmod 755 tools/travis_run.sh
 
-install:
-  - docker pull $DOCKER_IMAGE
+#install:
+#  - docker pull $DOCKER_IMAGE
 
 script:
-  - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE /io/tools/travis_linux_build_whl.sh
+  - source travis_run.sh
+#  - docker run --rm -e PLAT=$PLAT -v `pwd`:/io $DOCKER_IMAGE /io/tools/travis_linux_build_whl.sh
 
 before_deploy:
   - echo "$TRAVIS_TAG" "$TRAVIS_COMMIT"
