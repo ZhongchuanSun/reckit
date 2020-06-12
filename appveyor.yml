@@ -15,7 +15,7 @@ artifacts:
 
 deploy:
   release: win_whl-v0.1.0-b%APPVEYOR_BUILD_NUMBER%
-#  artifact: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
+  artifact: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
   prerelease: true
   provider: GitHub
   auth_token:
