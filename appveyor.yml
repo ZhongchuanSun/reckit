@@ -9,7 +9,7 @@ build_script:
   - ps: tools\appveyor_win_build_whl.ps1
 
 after_build:
-  - ps: 7z a .\win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip ..\compiled_pyd\*
+  - ps: 7z a win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip dist\*
 
 artifacts:
   - path: win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip
