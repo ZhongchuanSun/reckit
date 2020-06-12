@@ -1,29 +1,24 @@
-version: 2.1.{build}
+version: 0.1.0
 max_jobs: 1
 image: Visual Studio 2015
 clone_folder: C:\prj\test-appveyor
 
 build_script:
-- ps: cd C:\prj\test-appveyor
-- ps: tools\appveyor_win_build_whl.ps1
+  - ps: $RECKIT_VER=0.1.0
+  - ps: cd C:\prj\test-appveyor
+  - ps: tools\appveyor_win_build_whl.ps1
 
 after_build:
-    7z a .\win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip ..\compiled_pyd\*
+  - ps: 7z a .\win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip ..\compiled_pyd\*
 
 artifacts:
-- path: win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip
-
-environment:
-  my_variable:
-    secure: EtPzN/tNyp4noOA6WEC9WmAXJT3sWa7/E9Ba0Wv4Fvu+2KSsaOX3VDtgMyYkJjI9
+  - path: win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip
 
 deploy:
-  release: win_complie-2.1.%APPVEYOR_BUILD_NUMBER%
-  artifact: win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip
+  release: win_whl-v%RECKIT_VER%-b%TRAVIS_BUILD_NUMBER%
+  artifact: win_whl-v%RECKIT_VER%-windows-b%TRAVIS_BUILD_NUMBER%.zip
   prerelease: true
-#  description: 'windows compile'
   provider: GitHub
   auth_token:
-    secure: 8xnAJH3KJgNNa6fghrbQZ4NoYxJLdOkTtqkeGJyL4gG9lR5bHfpKX039qnAIkFPN
+    secure: Gu9NeWCVi4VCTTmlTM9ucoNZ8vnMoMZ4QcX2tORRnj+3B7tLkdi/PHW9yEiz6MCp
   draft: true
-
