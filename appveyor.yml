@@ -5,7 +5,7 @@ clone_folder: C:\prj\test-appveyor
 
 build_script:
 - ps: cd C:\prj\test-appveyor
-- ps: .\appveyor_windows_steps.ps1
+- ps: tools\appveyor_win_build_whl.ps1
 
 after_build:
     7z a .\win_complie-2.1.%APPVEYOR_BUILD_NUMBER%.zip ..\compiled_pyd\*

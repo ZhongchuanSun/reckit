@@ -18,7 +18,7 @@ before_install:
   - export RECKIT_VER=0.1.0
   - export TRAVIS_TAG="linux_whl-v${RECKIT_VER}-b${TRAVIS_BUILD_NUMBER}"
   - export ZIP_FILE="linux_whl-v${RECKIT_VER}-${PLAT}-b${TRAVIS_BUILD_NUMBER}.tar.gz"
-  - chmod 755 tools/travis_linux_steps.sh
+  - chmod 755 tools/travis_linux_build_whl.sh
 
 install:
   - docker pull $DOCKER_IMAGE
