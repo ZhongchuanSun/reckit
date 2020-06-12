@@ -1,23 +1,21 @@
-version: 0.1.0.{build}
-max_jobs: 1
-image: Visual Studio 2015
-clone_folder: C:\prj\test-appveyor
+environment:
+  matrix:
+    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+      APPVEYOR_JOB_NAME: "python37-x64-ubuntu"
+    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      APPVEYOR_JOB_NAME: "python37-x64-vs2015"
+    - APPVEYOR_BUILD_WORKER_IMAGE: macos-mojave
+      APPVEYOR_JOB_NAME: "python37-x64-macos-mojave"
 
-build_script:
-  - ps: cd C:\prj\test-appveyor
-  - ps: tools\appveyor_win_build_whl.ps1
+stack: python 3.7
 
-after_build:
-  7z a win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip dist\*
+init:
+- cmd: set PATH=C:\Python37;C:\Python37\Scripts;%PATH%
+
+install: python -m pip install cibuildwheel==1.4.2
+
+build_script: python -m cibuildwheel --output-dir wheelhouse
 
 artifacts:
-  - path: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
-
-deploy:
-  release: win_whl-v0.1.0-b%APPVEYOR_BUILD_NUMBER%
-  artifact: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
-  prerelease: true
-  provider: GitHub
-  auth_token:
-    secure: Gu9NeWCVi4VCTTmlTM9ucoNZ8vnMoMZ4QcX2tORRnj+3B7tLkdi/PHW9yEiz6MCp
-  draft: true
+  - path: "wheelhouse\\*.whl"
+    name: Wheels
