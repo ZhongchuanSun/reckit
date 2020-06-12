@@ -1,4 +1,5 @@
 environment:
+  CIBW_BUILD: cp36-* cp37-* cp38-*
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       APPVEYOR_JOB_NAME: "python37-x64-ubuntu"
