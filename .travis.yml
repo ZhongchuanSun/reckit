@@ -8,11 +8,11 @@ matrix:
     - sudo: required
       services:
         - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_i686 PLAT=manylinux1_i686 OS=linux
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_i686 PLAT=manylinux1_i686 OS=linux
     - sudo: required
       services:
         - docker
-      env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux1_x86_64 OS=linux
+      env: DOCKER_IMAGE=quay.io/pypa/manylinux1_x86_64 PLAT=manylinux1_x86_64 OS=linux
 
 
 before_install:
