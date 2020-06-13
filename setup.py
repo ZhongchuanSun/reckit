@@ -7,6 +7,29 @@ from setuptools import setup
 import setuptools
 from functools import wraps
 
+CLASSIFIERS = """\
+Development Status :: 4 - Beta
+Intended Audience :: Developers
+Intended Audience :: Science/Research
+License :: OSI Approved :: MIT License
+Operating System :: Microsoft :: Windows
+Operating System :: Unix
+Programming Language :: C
+Programming Language :: C++
+Programming Language :: Cython
+Programming Language :: Python
+Programming Language :: Python :: 3.6
+Programming Language :: Python :: 3.7
+Programming Language :: Python :: 3.8
+Programming Language :: Python :: Implementation :: CPython
+Topic :: Scientific/Engineering
+Topic :: Scientific/Engineering :: Artificial Intelligence
+Topic :: Scientific/Engineering :: Information Analysis
+Topic :: Software Development :: Libraries
+Topic :: Software Development :: Libraries :: Python Modules
+
+"""
+
 
 def get_include_dirs(workspace):
     include_dirs = [np.get_include()]
@@ -95,22 +118,8 @@ def setup_package():
         packages=setuptools.find_packages(),
         include_dirs=include_dirs,
         ext_modules=module_list,
-        platforms=["Windows", "Linux", "Mac OS-X", "Unix"],
-        classifiers=[
-            "License :: OSI Approved :: MIT License",
-            "Intended Audience :: Science/Research",
-            "Intended Audience :: Developers"
-            "Programming Language :: Python :: 3.6"
-            # "Programming Language :: Python :: 3.7",
-            # "Programming Language :: Python :: 3.8",
-            # "Programming Language :: C"
-            # "Programming Language :: Python :: Implementation :: CPython"
-            # "Operating System :: Microsoft :: Windows",
-            # "Operating System :: Unix",
-            # "Operating System :: MacOS",
-            # "Topic :: Software Development",
-            # "Topic :: Scientific/Engineering"
-        ],
+        platforms=["Windows", "Linux"],
+        classifiers=[_f for _f in CLASSIFIERS.split('\n') if _f],
         python_requires='>=3.6',
     )
     setup(**metadata)
