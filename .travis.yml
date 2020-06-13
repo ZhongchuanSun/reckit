@@ -33,7 +33,7 @@ script:
 before_deploy:
   - echo "$TRAVIS_TAG" "$TRAVIS_COMMIT"
   - git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT"
-  - tar -zcvf ${ZIP_FILE} dist/*
+  - tar -zcvf ${ZIP_FILE} wheelhouse/*
 
 deploy:
   provider: releases
