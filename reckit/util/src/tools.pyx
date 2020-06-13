@@ -4,6 +4,8 @@
 """
 import numpy as np
 
+__all__ = ["float_type", "int_type", "is_ndarray"]
+
 def get_float_type():
     cdef size_of_float = sizeof(float)*8
     if size_of_float == 32:

@@ -3,6 +3,8 @@
 """
 import numpy as np
 
+__all__ = ["DataIterator"]
+
 
 class Sampler(object):
     """Base class for all Samplers.

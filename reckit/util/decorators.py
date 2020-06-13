@@ -5,6 +5,8 @@ import time
 from inspect import signature
 from functools import wraps
 
+__all__ = ["typeassert", "time"]
+
 
 def typeassert(*type_args, **type_kwargs):
     def decorate(func):

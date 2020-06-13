@@ -1,5 +1,7 @@
 import numpy as np
 
+__all__ = ["pad_sequences"]
+
 
 def pad_sequences(sequences, value=0., max_len=None,
                   padding='post', truncating='post', dtype=np.int32):

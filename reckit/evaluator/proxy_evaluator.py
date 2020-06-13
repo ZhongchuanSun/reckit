@@ -1,7 +1,7 @@
 """
 @author: Zhongchuan Sun
 """
-from util import typeassert
+from reckit.util import typeassert
 from .abstract_evaluator import AbstractEvaluator
 from .uni_evaluator import UniEvaluator
 from .grouped_evaluator import GroupedEvaluator

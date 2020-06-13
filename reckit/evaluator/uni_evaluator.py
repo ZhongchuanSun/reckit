@@ -2,12 +2,13 @@
 @author: Zhongchuan Sun
 """
 import numpy as np
-from data import DataIterator
-from util import typeassert
+from reckit.data import DataIterator
+from reckit.util import typeassert
 from .src import CPPEvaluator
-from util import float_type, is_ndarray
-from util import pad_sequences
+from reckit.util import float_type, is_ndarray
+from reckit.data import pad_sequences
 
+__all__ = ["UniEvaluator"]
 
 metric_dict = {"Precision": 1, "Recall": 2, "MAP": 3, "NDCG": 4, "MRR": 5}
 re_metric_dict = {value: key for key, value in metric_dict.items()}

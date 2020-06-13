@@ -4,8 +4,8 @@
 """
 import numpy as np
 cimport numpy as np
-from evaluator.abstract_evaluator import AbstractEvaluator
-from util.src.tools import float_type
+from reckit.evaluator.abstract_evaluator import AbstractEvaluator
+from reckit.util.src.tools import float_type
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector as cvector
 

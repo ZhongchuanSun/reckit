@@ -1,7 +1,7 @@
 """
 @author: Zhongchuan Sun
 """
-from util import typeassert
+from reckit.util import typeassert
 import numpy as np
 from collections import OrderedDict
 import pandas as pd
