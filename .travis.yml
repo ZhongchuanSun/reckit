@@ -13,15 +13,7 @@ matrix:
       services:
         - docker
       env: DOCKER_IMAGE=quay.io/pypa/manylinux2010_x86_64 PLAT=manylinux2010_x86_64 OS=linux
-    - os: osx
-      python: 3.6
-      env: PLAT=osx_py36 OS=osx
-    - os: osx
-      python: 3.7
-      env: PLAT=osx_py37 OS=osx
-    - os: osx
-      python: 3.8
-      env: PLAT=osx_py38 OS=osx
+
 
 before_install:
   - export RECKIT_VER=0.1.0
