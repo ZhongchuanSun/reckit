@@ -5,7 +5,7 @@ import time
 from inspect import signature
 from functools import wraps
 
-__all__ = ["typeassert", "time"]
+__all__ = ["typeassert", "timer"]
 
 
 def typeassert(*type_args, **type_kwargs):

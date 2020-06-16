@@ -106,6 +106,9 @@ def setup_package():
     with open("README.md", "r") as fh:
         long_description = fh.read()
 
+    install_requires = ["numpy>=1.17",
+                        "pandas>=0.25.3"]
+
     metadata = dict(
         name="reckit",  # Replace with your own username
         version="0.1.0",
@@ -121,6 +124,7 @@ def setup_package():
         platforms=["Windows", "Linux"],
         classifiers=[_f for _f in CLASSIFIERS.split('\n') if _f],
         python_requires='>=3.6',
+        install_requires=install_requires
     )
     setup(**metadata)
 
