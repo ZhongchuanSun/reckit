@@ -9,5 +9,8 @@ __all__.extend(["Logger"])
 from .src import *
 from . import src
 __all__.extend(src.__all__)
-
 del src
+
+from .tools import *
+from . import tools
+__all__.extend(tools.__all__)

@@ -5,29 +5,19 @@
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector as cvector
 from libc.stdlib cimport rand, srand
-
-
+import numpy as np
 ctypedef cset[int] int_set
 
-def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
-    """Sample random integers from [0, high).
-    """
-    if size <= 0:
-        raise ValueError("'size' must be a positive integer.")
 
-    if not isinstance(replace, bool):
-        raise TypeError("'replace' must be bool.")
+cdef llrand():
+    cdef unsigned long long r = 0
+    cdef int i = 0
+    for i in range(5):
+        r = (r << 15) | (rand() & 0x7FFF)
+    return r & 0xFFFFFFFFFFFFFFFFULL
 
-    if p is not None:
-        raise NotImplementedError
 
-    if exclusion is not None and high <= len(exclusion):
-        raise ValueError("The number of 'exclusion' is greater than 'high'.")
-
-    len_exclusion = len(exclusion) if exclusion is not None else 0
-    if replace is False and (high-len_exclusion <= size):
-        raise ValueError("There is not enough integers to be sampled.")
-
+def uniform_sample(high, size=1, replace=True, exclusion=None):
     cdef int_set omission
     if exclusion is not None:
         for elem in exclusion:
@@ -39,19 +29,63 @@ def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
     cdef int c_high = high
     cdef int c_replace = replace
     cdef int c_size = size
-    while c_size - i:
-        a = rand() % c_high
-        if not omission.count(a):
-            c_arr.push_back(a)
-            i += 1
-            if not c_replace:
-                omission.insert(a)
 
+    while c_size - i:
+            a = llrand() % c_high
+            if not omission.count(a):
+                c_arr.push_back(a)
+                i += 1
+                if not c_replace:
+                    omission.insert(a)
     if size == 1:
         tmp = c_arr[0]
     else:
         tmp = c_arr
     return tmp
+
+
+def distribution_choice(high, size=1, replace=True, p=None, exclusion=None):
+    if p is None:
+        raise ValueError("'p' cannot be None.")
+
+    if exclusion is not None:
+        for idx in exclusion:
+            p[idx] = 0
+    p = np.array(p, dtype=np.float32)
+    p = p / np.sum(p)
+    samples = np.random.choice(np.arange(high), size=size, replace=replace, p=p)
+
+    if size == 1:
+        tmp = int(samples)
+    else:
+        tmp = samples.tolist()
+    return tmp
+
+
+def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
+    """Sample random integers from [0, high).
+    """
+    if size <= 0:
+        raise ValueError("'size' must be a positive integer.")
+
+    if not isinstance(replace, bool):
+        raise TypeError("'replace' must be bool.")
+
+    if p is not None and len(p)!=high:
+        raise ValueError("The length of each 'p' must be equal with 'high'.")
+
+    if exclusion is not None and high <= len(exclusion):
+        raise ValueError("The number of 'exclusion' is greater than 'high'.")
+
+    len_exclusion = len(exclusion) if exclusion is not None else 0
+    if replace is False and (high-len_exclusion <= size):
+        raise ValueError("There is not enough integers to be sampled.")
+
+
+    if p is None:
+        return uniform_sample(high, size=size, replace=replace, exclusion=exclusion)
+    else:
+        return distribution_choice(high, size=size, replace=replace, p=p, exclusion=exclusion)
 
 def batch_randint_choice(high, size, replace=True, p=None, exclusion=None):
     """Return random integers from `0` (inclusive) to `high` (exclusive).
@@ -67,8 +101,8 @@ def batch_randint_choice(high, size, replace=True, p=None, exclusion=None):
         list: a list of 1-D array_like sample
 
     """
-    if p is not None:
-        raise NotImplementedError
+    if p is not None and len(p) != len(size):
+        raise ValueError("If 'p' is not None, the lengths of 'p' and 'size' must be equal.")
 
     if exclusion is not None and len(size) != len(exclusion):
         raise ValueError("The shape of 'exclusion' is not compatible with the shape of 'size'!")

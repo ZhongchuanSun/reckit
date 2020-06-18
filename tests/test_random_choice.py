@@ -1,6 +1,6 @@
 import unittest
-from utils.cython.random_choice import randint_choice
-from utils.cython.random_choice import batch_randint_choice
+from reckit.random import randint_choice
+from reckit.random import batch_randint_choice
 import numpy as np
 
 
@@ -28,6 +28,29 @@ class TestRandintChoice(unittest.TestCase):
         self.assertEqual(len(samples), high+1)
         for s in samples:
             self.assertNotIn(s, exclusion)
+
+    def test_prob(self):
+        high = 20
+        p = randint_choice(high, size=high, replace=True, p=None, exclusion=None)
+        p = np.array(p)/sum(p)
+        num_samples = high*20000
+        exclusion = []
+        samples = randint_choice(high, size=num_samples, replace=True, p=p, exclusion=exclusion)
+        frequence = np.zeros_like(p)
+        for s in samples:
+            frequence[s] += 1
+        frequence = frequence/num_samples
+        exc_flag = np.zeros_like(p)
+        for e in exclusion:
+            exc_flag[e] = 1
+        compare = np.concatenate([np.expand_dims(p, axis=1),
+                                  np.expand_dims(frequence, axis=1),
+                                  np.expand_dims(exc_flag, axis=1)], axis=1)
+        np_samples = np.random.choice(np.arange(high), size=num_samples, p=p)
+        np_frequence = np.zeros_like(p)
+        for s in np_samples:
+            np_frequence[s] += 1
+        np_frequence = np_frequence/num_samples
 
     def test_replace(self):
         high = 2020

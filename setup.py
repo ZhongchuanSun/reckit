@@ -27,8 +27,12 @@ Topic :: Scientific/Engineering :: Artificial Intelligence
 Topic :: Scientific/Engineering :: Information Analysis
 Topic :: Software Development :: Libraries
 Topic :: Software Development :: Libraries :: Python Modules
-
 """
+
+MAJOR = 0
+MINOR = 1
+MICRO = 1
+VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 
 def get_include_dirs(workspace):
@@ -108,10 +112,11 @@ def setup_package():
 
     install_requires = ["numpy>=1.17",
                         "pandas>=0.25.3"]
+    install_requires = []
 
     metadata = dict(
         name="reckit",  # Replace with your own username
-        version="0.1.0",
+        version=VERSION,
         author="ZhongchuanSun",
         author_email="zhongchuansun@gmail.com",
         description="A toolkit for recommender systems",
