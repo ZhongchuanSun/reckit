@@ -73,7 +73,7 @@ class UniEvaluator(CPPEvaluator):
             if m not in metric_dict:
                 raise ValueError("There is not the metric named '%s'!" % metric)
 
-        self.user_pos_train = user_train_dict
+        self.user_pos_train = user_train_dict if user_train_dict is not None else dict()
         self.user_pos_test = user_test_dict
         self.user_neg_test = user_neg_test
         self.metrics_num = len(metric)
@@ -139,8 +139,9 @@ class UniEvaluator(CPPEvaluator):
                 # set the ranking scores of training items to -inf,
                 # then the training items will be sorted at the end of the ranking list.
                 for idx, user in enumerate(batch_users):
-                    train_items = self.user_pos_train[user]
-                    ranking_score[idx][train_items] = -np.inf
+                    if user in self.user_pos_train and len(self.user_pos_train[user])>0:
+                        train_items = self.user_pos_train[user]
+                        ranking_score[idx][train_items] = -np.inf
 
             result = self.eval_score_matrix(ranking_score, test_items, self.metrics,
                                             top_k=self.max_top, thread_num=self.num_thread)  # (B,k*metric_num)
