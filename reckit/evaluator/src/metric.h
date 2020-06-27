@@ -49,6 +49,7 @@ void ap(const vector<int> &rank, const unordered_set<int> &truth, float *result_
     float pre = 0;
     float sum_pre = 0;
     float denominator = 1;
+    float truth_len = truth.size();
     for(unsigned int i=0; i<rank.size(); i++)
     {
         if(truth.find(rank[i]) != truth.end())
