@@ -17,3 +17,6 @@ from .util import *
 from . import util
 __all__.extend(util.__all__)
 
+from .plot import *
+from . import plot
+__all__.extend(plot.__all__)

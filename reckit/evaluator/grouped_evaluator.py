@@ -20,7 +20,7 @@ class GroupedEvaluator(AbstractEvaluator):
     four groups: `(0, 10]`, `(10, 30]`, `(30, 50]` and `(50, 100]`. And the
     users whose interacted items more than `100` will be discard.
     """
-    @typeassert(user_train_dict=dict, user_test_dict=dict, group_view=list)
+    @typeassert(user_train_dict=(dict, None.__class__), user_test_dict=dict, group_view=list)
     def __init__(self, user_train_dict, user_test_dict, user_neg_test=None,
                  metric=None, group_view=None, top_k=50, batch_size=1024, num_thread=8):
         """Initializes a new `GroupedEvaluator` instance.

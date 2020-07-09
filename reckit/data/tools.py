@@ -3,20 +3,20 @@ import numpy as np
 __all__ = ["pad_sequences"]
 
 
-def pad_sequences(sequences, value=0., max_len=None,
-                  padding='post', truncating='post', dtype=np.int32):
+def pad_sequences(sequences, value=0, max_len=None,
+                  padding='post', truncating='post', dtype=int):
     """Pads sequences to the same length.
 
     Args:
         sequences (list): A list of lists, where each element is a sequence.
-        value (int or float): Padding value. Defaults to `0.`.
+        value (int, float): Padding value. Defaults to `0.`.
         max_len (int or None): Maximum length of all sequences.
         padding (str): `"pre"` or `"post"`: pad either before or after each
             sequence. Defaults to `post`.
         truncating (str): `"pre"` or `"post"`: remove values from sequences
             larger than `max_len`, either at the beginning or at the end of
             the sequences. Defaults to `post`.
-        dtype (int or float): Type of the output sequences. Defaults to `np.int32`.
+        dtype (int, float): Type of the output sequences. Defaults to `np.int32`.
 
     Returns:
         np.ndarray: Numpy array with shape `(len(sequences), max_len)`.

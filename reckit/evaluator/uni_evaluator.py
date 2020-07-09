@@ -32,13 +32,13 @@ class UniEvaluator(CPPEvaluator):
       `MRR` have same numeric values; 4) `Precision` is meaningless.
     """
 
-    @typeassert(user_train_dict=dict, user_test_dict=(dict, None.__class__))
+    @typeassert(user_train_dict=(dict, None.__class__), user_test_dict=(dict, None.__class__))
     def __init__(self, user_train_dict, user_test_dict, user_neg_test=None,
                  metric=None, top_k=50, batch_size=1024, num_thread=8):
         """Initializes a new `UniEvaluator` instance.
 
         Args:
-            user_train_dict (dict): Each key is user ID and the corresponding
+            user_train_dict (dict, None): Each key is user ID and the corresponding
                 value is the list of **training items**.
             user_test_dict (dict): Each key is user ID and the corresponding
                 value is the list of **test items**.
