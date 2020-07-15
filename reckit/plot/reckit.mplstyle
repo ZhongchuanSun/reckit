@@ -1,0 +1,36 @@
+# Set figure size
+figure.figsize : 4.72, 3.54
+# 1pt == 1/72inch
+
+# set font
+# font.family : times new roman
+font.serif : Times New Roman
+font.family : serif
+font.style  : normal
+font.weight : normal
+
+# set font size
+axes.titlesize      : 18
+axes.labelsize      : 16
+ytick.labelsize     : 16
+xtick.labelsize     : 16
+legend.fontsize     : 13
+
+# set axies
+ytick.direction : in
+xtick.direction : in
+
+# figure.subplot.left     : 0.13
+# figure.subplot.right    : 0.99
+# figure.subplot.bottom   : 0.14
+# figure.subplot.top      : 0.92
+
+# set color cycle
+axes.prop_cycle : cycler('color', ["5ad8a6", "e8684a", "5b8ff9", "ff9d4d", "6dc8ec", "f6bd16", "5d7092", "ff99c3", "269a99", "9270ca"])
+
+# Set hatch
+hatch.linewidth : 0.3
+
+# Use LaTeX for math formatting
+text.usetex : True
+text.latex.preamble : \usepackage{amsmath}, \usepackage{times}

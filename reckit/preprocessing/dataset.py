@@ -256,6 +256,18 @@ class Dataset(object):
             self.valid_data = pd.concat(valid_data, ignore_index=True)
         self.test_data = pd.concat(test_data, ignore_index=True)
 
+    @typeassert(num_neg=int)
+    def sampling_neg_items_for_test(self, num_neg):
+        if num_neg <= 0:
+            raise ValueError("'num_neg' must be a positive integer.")
+
+        if self.user2id is None and self.item2id is None:
+            raise ValueError("users or items have not been remapped, please remapped them first.")
+        if self.train_data is None:
+            raise ValueError("The dataset has not been split, please split it first.")
+
+        # TODO 采样
+
     def save_data(self, save_dir=None):
         """Save data to disk.
 

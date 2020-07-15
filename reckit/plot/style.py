@@ -3,9 +3,11 @@ Reference: https://github.com/agile-geoscience/striplog/blob/master/striplog/hat
 """
 
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 from matplotlib.hatch import Shapes
 from matplotlib.path import Path
 from matplotlib.lines import Line2D
+import os
 
 __all__ = ["colors", "markers", "patterns"]
 
@@ -15,6 +17,11 @@ colors = ["#5ad8a6", "#e8684a", "#5b8ff9", "#ff9d4d", "#6dc8ec",
           "#f6bd16", "#5d7092", "#ff99c3", "#269a99", "#9270ca"]
 
 patterns = ['x', '.', '\\', "v", '/', "l", "!", "c", "=", "p"]
+
+
+def use(mplstyle):  # TODO
+    style_path = os.path.join(os.path.dirname(__file__), mplstyle, ".mplstyle")
+    plt.style.use(style_path)
 
 
 class CrossHatch(Shapes):
