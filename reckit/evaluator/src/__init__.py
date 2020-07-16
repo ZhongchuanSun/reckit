@@ -1,3 +1,3 @@
-from .cpp_evaluator import CPPEvaluator
+from .eval_matrix import eval_score_matrix
 
-__all__ = ["CPPEvaluator"]
+__all__ = ["eval_score_matrix"]

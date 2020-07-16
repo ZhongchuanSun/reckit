@@ -1,6 +1,7 @@
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
+__all__ = ["AbstractEvaluator"]
 
 
 class AbstractEvaluator(object):

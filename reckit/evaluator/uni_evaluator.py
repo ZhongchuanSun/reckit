@@ -1,20 +1,20 @@
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
+__all__ = ["UniEvaluator"]
+
 import numpy as np
 from reckit.data import DataIterator
 from reckit.util import typeassert
-from .src import CPPEvaluator
+from .abstract_evaluator import AbstractEvaluator
+from .src import eval_score_matrix
 from reckit.util import float_type, is_ndarray
-from reckit.data import pad_sequences
-
-__all__ = ["UniEvaluator"]
 
 metric_dict = {"Precision": 1, "Recall": 2, "MAP": 3, "NDCG": 4, "MRR": 5}
 re_metric_dict = {value: key for key, value in metric_dict.items()}
 
 
-class UniEvaluator(CPPEvaluator):
+class UniEvaluator(AbstractEvaluator):
     """Cpp implementation `UniEvaluator` for item ranking task.
 
     Evaluation metrics of `UniEvaluator` are configurable and can
@@ -33,7 +33,7 @@ class UniEvaluator(CPPEvaluator):
     """
 
     @typeassert(user_train_dict=(dict, None.__class__), user_test_dict=(dict, None.__class__))
-    def __init__(self, user_train_dict, user_test_dict, user_neg_test=None,
+    def __init__(self, user_train_dict, user_test_dict,
                  metric=None, top_k=50, batch_size=1024, num_thread=8):
         """Initializes a new `UniEvaluator` instance.
 
@@ -58,7 +58,6 @@ class UniEvaluator(CPPEvaluator):
         Raises:
              ValueError: If `metric` or one of its element is invalid.
         """
-        # super(UniEvaluator, self).__init__(user_test_dict)
         super(UniEvaluator, self).__init__()
         if metric is None:
             metric = ["Precision", "Recall", "MAP", "NDCG", "MRR"]
@@ -75,7 +74,6 @@ class UniEvaluator(CPPEvaluator):
 
         self.user_pos_train = user_train_dict if user_train_dict is not None else dict()
         self.user_pos_test = user_test_dict
-        self.user_neg_test = user_neg_test
         self.metrics_num = len(metric)
         self.metrics = [metric_dict[m] for m in metric]
         self.num_thread = num_thread
@@ -107,6 +105,8 @@ class UniEvaluator(CPPEvaluator):
                 a method `predict_for_eval(self, users)`, where the argument
                 `users` is a list of users and the return is a 2-D array that
                 contains `users` rating/ranking scores on all items.
+            test_users: The users will be used to test.
+                Default is None and means test all users in user_pos_test.
 
         Returns:
             str: A single-line string consist of all results, such as
@@ -121,30 +121,20 @@ class UniEvaluator(CPPEvaluator):
         test_users = DataIterator(test_users, batch_size=self.batch_size, shuffle=False, drop_last=False)
         batch_result = []
         for batch_users in test_users:
-            if self.user_neg_test is not None:
-                candidate_items = [list(self.user_pos_test[u]) + self.user_neg_test[u] for u in batch_users]
-                test_items = [set(range(len(self.user_pos_test[u]))) for u in batch_users]
+            test_items = [self.user_pos_test[u] for u in batch_users]
+            ranking_score = model.predict(batch_users)  # (B,N)
+            if not is_ndarray(ranking_score, float_type):
+                ranking_score = np.array(ranking_score, dtype=float_type)
 
-                ranking_score = model.predict(batch_users, candidate_items)  # (B,N)
-                ranking_score = pad_sequences(ranking_score, value=-np.inf, dtype=float_type)
+            # set the ranking scores of training items to -inf,
+            # then the training items will be sorted at the end of the ranking list.
+            for idx, user in enumerate(batch_users):
+                if user in self.user_pos_train and len(self.user_pos_train[user]) > 0:
+                    train_items = self.user_pos_train[user]
+                    ranking_score[idx][train_items] = -np.inf
 
-                if not is_ndarray(ranking_score, float_type):
-                    ranking_score = np.array(ranking_score, dtype=float_type)
-            else:
-                test_items = [self.user_pos_test[u] for u in batch_users]
-                ranking_score = model.predict(batch_users, None)  # (B,N)
-                if not is_ndarray(ranking_score, float_type):
-                    ranking_score = np.array(ranking_score, dtype=float_type)
-
-                # set the ranking scores of training items to -inf,
-                # then the training items will be sorted at the end of the ranking list.
-                for idx, user in enumerate(batch_users):
-                    if user in self.user_pos_train and len(self.user_pos_train[user])>0:
-                        train_items = self.user_pos_train[user]
-                        ranking_score[idx][train_items] = -np.inf
-
-            result = self.eval_score_matrix(ranking_score, test_items, self.metrics,
-                                            top_k=self.max_top, thread_num=self.num_thread)  # (B,k*metric_num)
+            result = eval_score_matrix(ranking_score, test_items, self.metrics,
+                                       top_k=self.max_top, thread_num=self.num_thread)  # (B,k*metric_num)
             batch_result.append(result)
 
         # concatenate the batch results to a matrix
