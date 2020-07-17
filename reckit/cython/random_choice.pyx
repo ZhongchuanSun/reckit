@@ -1,7 +1,7 @@
 # distutils: language = c++
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector as cvector
 from libc.stdlib cimport rand, srand
@@ -62,7 +62,7 @@ def distribution_choice(high, size=1, replace=True, p=None, exclusion=None):
     return tmp
 
 
-def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
+def _randint_choice(high, size=1, replace=True, p=None, exclusion=None):
     """Sample random integers from [0, high).
 
     Args:
@@ -76,7 +76,6 @@ def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
     Returns:
 
     """
-    np.random.randint()
     if size <= 0:
         raise ValueError("'size' must be a positive integer.")
 
@@ -99,7 +98,7 @@ def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
     else:
         return distribution_choice(high, size=size, replace=replace, p=p, exclusion=exclusion)
 
-def batch_randint_choice(high, size, replace=True, p=None, exclusion=None):
+def _batch_randint_choice(high, size, replace=True, p=None, exclusion=None):
     """Return random integers from `0` (inclusive) to `high` (exclusive).
 
     Args:
@@ -123,5 +122,5 @@ def batch_randint_choice(high, size, replace=True, p=None, exclusion=None):
     for idx in range(len(size)):
         p_tmp = p[idx] if p is not None else None
         exc = exclusion[idx] if exclusion is not None else None
-        results.append(randint_choice(high, size=size[idx], replace=replace, p=p_tmp, exclusion=exc))
+        results.append(_randint_choice(high, size=size[idx], replace=replace, p=p_tmp, exclusion=exc))
     return results

@@ -4,11 +4,11 @@ __email__ = "zhongchuansun@gmail.com"
 __all__ = ["UniEvaluator"]
 
 import numpy as np
-from reckit.data import DataIterator
+from reckit.dataiterator import DataIterator
 from reckit.util import typeassert
 from .abstract_evaluator import AbstractEvaluator
-from .src import eval_score_matrix
-from reckit.util import float_type, is_ndarray
+from reckit.cython import eval_score_matrix
+from reckit.cython import float_type, is_ndarray
 
 metric_dict = {"Precision": 1, "Recall": 2, "MAP": 3, "NDCG": 4, "MRR": 5}
 re_metric_dict = {value: key for key, value in metric_dict.items()}

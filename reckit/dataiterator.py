@@ -1,9 +1,9 @@
-"""
-@author: Zhongchuan Sun
-"""
-import numpy as np
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
 
 __all__ = ["DataIterator"]
+
+import numpy as np
 
 
 class Sampler(object):

@@ -1,7 +1,7 @@
 # distutils: language = c++
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
 import numpy as np
 
 __all__ = ["float_type", "int_type", "is_ndarray"]

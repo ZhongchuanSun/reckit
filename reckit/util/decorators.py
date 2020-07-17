@@ -1,11 +1,11 @@
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
+__all__ = ["typeassert", "timer"]
+
 import time
 from inspect import signature
 from functools import wraps
-
-__all__ = ["typeassert", "timer"]
 
 
 def typeassert(*type_args, **type_kwargs):

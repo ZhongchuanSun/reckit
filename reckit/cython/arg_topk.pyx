@@ -1,14 +1,14 @@
 # distutils: language = c++
-"""
-@author: Zhongchuan Sun
-"""
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
 import numpy as np
 cimport numpy as np
 import os
 from .tools import float_type, is_ndarray, int_type
 
 
-cdef extern from "arg_topk.h":
+cdef extern from "include/arg_topk.h":
     void arg_top_k_2d(float *scores_pt, int columns_num, int rows_num,
                       int top_k, int thread_num, int *results_pt)
 

@@ -1,14 +1,17 @@
+__author__ = "Zhongchuan Sun"
+__email__ = "zhongchuansun@gmail.com"
+
+__all__ = ["Preprocessor"]
+
 import os
 import math
 import pandas as pd
 from reckit.util import typeassert
-from reckit.util import Logger
+from reckit.logger import Logger
 from collections import OrderedDict
 
-__all__ = ["Dataset"]
 
-
-class Dataset(object):
+class Preprocessor(object):
     _USER = "user"
     _ITEM = "item"
     _RATING = "rating"
@@ -256,18 +259,6 @@ class Dataset(object):
             self.valid_data = pd.concat(valid_data, ignore_index=True)
         self.test_data = pd.concat(test_data, ignore_index=True)
 
-    @typeassert(num_neg=int)
-    def sampling_neg_items_for_test(self, num_neg):
-        if num_neg <= 0:
-            raise ValueError("'num_neg' must be a positive integer.")
-
-        if self.user2id is None and self.item2id is None:
-            raise ValueError("users or items have not been remapped, please remapped them first.")
-        if self.train_data is None:
-            raise ValueError("The dataset has not been split, please split it first.")
-
-        # TODO 采样
-
     def save_data(self, save_dir=None):
         """Save data to disk.
 
@@ -316,7 +307,7 @@ class Dataset(object):
 
 if __name__ == "__main__":
     # Usage
-    data = Dataset("UIRT")
+    data = Preprocessor("UIRT")
     data.load_data("/home/sun/Desktop/Beauty.csv")
     data.drop_duplicates()
     data.filter_data(user_min=5, item_min=5)

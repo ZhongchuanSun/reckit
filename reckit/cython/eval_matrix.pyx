@@ -4,14 +4,14 @@ __email__ = "zhongchuansun@gmail.com"
 
 import numpy as np
 cimport numpy as np
-from reckit.util.src.tools import float_type
+from .tools import float_type
 from libcpp.unordered_set cimport unordered_set as cset
 from libcpp.vector cimport vector as cvector
 
 
 ctypedef cset[int] int_set
 
-cdef extern from "evaluate.h":
+cdef extern from "include/evaluate.h":
     void cpp_evaluate_matrix(float *rating_matrix, int rating_len,
                              cvector[int_set] &test_items,
                              cvector[int] metric, int top_k,
