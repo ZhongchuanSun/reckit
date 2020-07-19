@@ -6,6 +6,7 @@ __all__ = ["typeassert", "timer"]
 import time
 from inspect import signature
 from functools import wraps
+from collections import Iterable
 
 
 def typeassert(*type_args, **type_kwargs):
@@ -18,7 +19,18 @@ def typeassert(*type_args, **type_kwargs):
             bound_values = sig.bind(*args, **kwargs)
             for name, value in bound_values.arguments.items():
                 if name in bound_types:
-                    if not isinstance(value, bound_types[name]):
+                    types = bound_types[name]
+                    if not isinstance(types, Iterable):
+                        types = [types]
+
+                    if value is None:
+                        if None in types:
+                            continue
+                        else:
+                            raise TypeError('Argument {} must be {}'.format(name, bound_types[name]))
+
+                    types = tuple([t for t in types if t is not None])
+                    if not isinstance(value, types):
                         raise TypeError('Argument {} must be {}'.format(name, bound_types[name]))
             return func(*args, **kwargs)
         return wrapper

@@ -82,7 +82,7 @@ class Configurator(object):
             config_sec = section
         else:
             raise ValueError("'%s' has more than one sections but there is no "
-                             "section named '%s'" % cfg_file, section)
+                             "section named '%s'" % (cfg_file, section))
 
         # Generate the section name
         sec_name = "%s:%s" % (os.path.basename(cfg_file).split(".")[0], config_sec)
