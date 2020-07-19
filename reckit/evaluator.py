@@ -1,12 +1,11 @@
 __author__ = "Zhongchuan Sun"
 __email__ = "zhongchuansun@gmail.com"
 
-__all__ = ["UniEvaluator"]
+__all__ = ["Evaluator"]
 
 import numpy as np
 from reckit.dataiterator import DataIterator
 from reckit.util import typeassert
-from .abstract_evaluator import AbstractEvaluator
 from reckit.cython import eval_score_matrix
 from reckit.cython import float_type, is_ndarray
 
@@ -14,10 +13,10 @@ metric_dict = {"Precision": 1, "Recall": 2, "MAP": 3, "NDCG": 4, "MRR": 5}
 re_metric_dict = {value: key for key, value in metric_dict.items()}
 
 
-class UniEvaluator(AbstractEvaluator):
-    """Cpp implementation `UniEvaluator` for item ranking task.
+class Evaluator(object):
+    """Evaluator for item ranking task.
 
-    Evaluation metrics of `UniEvaluator` are configurable and can
+    Evaluation metrics of `Evaluator` are configurable and can
     automatically fit both leave-one-out and fold-out data splitting
     without specific indication:
 
@@ -27,15 +26,18 @@ class UniEvaluator(AbstractEvaluator):
 
     * **Second**, this class and its evaluation metrics can automatically fit
       both leave-one-out and fold-out data splitting without specific indication.
-      In **leave-one-out** evaluation, 1) `Recall` is equal to `HitRatio`;
-      2) The implementation of `NDCG` is compatible with fold-out; 3) `MAP` and
-      `MRR` have same numeric values; 4) `Precision` is meaningless.
+
+      In **leave-one-out** evaluation:
+        1) `Recall` is equal to `HitRatio`;
+        2) The implementation of `NDCG` is compatible with fold-out;
+        3) `MAP` and `MRR` have same numeric values;
+        4) `Precision` is meaningless.
     """
 
-    @typeassert(user_train_dict=(dict, None.__class__), user_test_dict=(dict, None.__class__))
+    @typeassert(user_train_dict=(dict, None), user_test_dict=dict)
     def __init__(self, user_train_dict, user_test_dict,
                  metric=None, top_k=50, batch_size=1024, num_thread=8):
-        """Initializes a new `UniEvaluator` instance.
+        """Initializes a new `Evaluator` instance.
 
         Args:
             user_train_dict (dict, None): Each key is user ID and the corresponding
@@ -58,7 +60,7 @@ class UniEvaluator(AbstractEvaluator):
         Raises:
              ValueError: If `metric` or one of its element is invalid.
         """
-        super(UniEvaluator, self).__init__()
+        super(Evaluator, self).__init__()
         if metric is None:
             metric = ["Precision", "Recall", "MAP", "NDCG", "MRR"]
         elif isinstance(metric, str):
@@ -72,8 +74,11 @@ class UniEvaluator(AbstractEvaluator):
             if m not in metric_dict:
                 raise ValueError("There is not the metric named '%s'!" % metric)
 
-        self.user_pos_train = user_train_dict if user_train_dict is not None else dict()
-        self.user_pos_test = user_test_dict
+        self.user_pos_train = dict()
+        self.user_pos_test = dict()
+        self.set_train_data(user_train_dict)
+        self.set_test_data(user_test_dict)
+
         self.metrics_num = len(metric)
         self.metrics = [metric_dict[m] for m in metric]
         self.num_thread = num_thread
@@ -85,6 +90,16 @@ class UniEvaluator(AbstractEvaluator):
         else:
             self.top_show = np.sort(top_k)
 
+    @typeassert(user_train_dict=(dict, None))
+    def set_train_data(self, user_train_dict=None):
+        self.user_pos_train = user_train_dict if user_train_dict is not None else dict()
+
+    @typeassert(user_train_dict=dict)
+    def set_test_data(self, user_test_dict):
+        if len(user_test_dict) == 0:
+            raise ValueError("'user_test_dict' can be empty.")
+        self.user_pos_test = user_test_dict
+
     def metrics_info(self):
         """Get all metrics information.
 
@@ -92,7 +107,7 @@ class UniEvaluator(AbstractEvaluator):
             str: A string consist of all metrics information， such as
                 `"Precision@10    Precision@20    NDCG@10    NDCG@20"`.
         """
-        metrics_show = ['\t'.join([("%s@"%re_metric_dict[metric] + str(k)).ljust(12) for k in self.top_show])
+        metrics_show = ['\t'.join([("%s@" % re_metric_dict[metric] + str(k)).ljust(12) for k in self.top_show])
                         for metric in self.metrics]
         metric = '\t'.join(metrics_show)
         return "metrics:\t%s" % metric
@@ -102,7 +117,7 @@ class UniEvaluator(AbstractEvaluator):
 
         Args:
             model: The model need to be evaluated. This model must have
-                a method `predict_for_eval(self, users)`, where the argument
+                a method `predict(self, users)`, where the argument
                 `users` is a list of users and the return is a 2-D array that
                 contains `users` rating/ranking scores on all items.
             test_users: The users will be used to test.
@@ -114,6 +129,11 @@ class UniEvaluator(AbstractEvaluator):
         """
         # B: batch size
         # N: the number of items
+        if not hasattr(model, "predict"):
+            raise AttributeError("'model' must have attribute 'predict'.")
+        # elif model.predict.__code__.co_argcount != 2:
+        #     raise AttributeError("'model.predict' must have 1 parameter.")
+
         test_users = test_users if test_users is not None else list(self.user_pos_test.keys())
         if not isinstance(test_users, (list, tuple, set, np.ndarray)):
             raise TypeError("'test_user' must be a list, tuple, set or numpy array!")
