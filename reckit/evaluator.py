@@ -94,7 +94,7 @@ class Evaluator(object):
     def set_train_data(self, user_train_dict=None):
         self.user_pos_train = user_train_dict if user_train_dict is not None else dict()
 
-    @typeassert(user_train_dict=dict)
+    @typeassert(user_test_dict=dict)
     def set_test_data(self, user_test_dict):
         if len(user_test_dict) == 0:
             raise ValueError("'user_test_dict' can be empty.")

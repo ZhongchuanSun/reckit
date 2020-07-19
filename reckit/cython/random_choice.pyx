@@ -9,6 +9,9 @@ import numpy as np
 ctypedef cset[int] int_set
 
 
+def _init_random_seed(seed):
+    srand(seed)
+
 cdef llrand():
     cdef unsigned long long r = 0
     cdef int i = 0
