@@ -85,7 +85,7 @@ class Configurator(object):
                              "section named '%s'" % (cfg_file, section))
 
         # Generate the section name
-        sec_name = "%s:%s" % (os.path.basename(cfg_file).split(".")[0], config_sec)
+        sec_name = "%s:[%s]" % (os.path.basename(cfg_file).split(".")[0], config_sec)
         if sec_name in self._sections:
             sec_name += "_%d" % len(self._sections)
 
@@ -205,9 +205,10 @@ class Configurator(object):
             sec_str.append(arg_info)
 
         # cmd
-        cmd_info = '\n'.join(["{}={}".format(arg, value) for arg, value in self._cmd_args.items()])
-        cmd_info = "Command line:\n%s" % cmd_info
-        sec_str.append(cmd_info)
+        if self._cmd_args:
+            cmd_info = '\n'.join(["{}={}".format(arg, value) for arg, value in self._cmd_args.items()])
+            cmd_info = "Command line:\n%s" % cmd_info
+            sec_str.append(cmd_info)
 
         info = '\n\n'.join(sec_str)
         return info
