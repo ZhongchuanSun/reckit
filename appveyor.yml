@@ -1,4 +1,4 @@
-version: 0.1.0.{build}
+version: 0.2.x.{build}
 max_jobs: 1
 image: Visual Studio 2015
 clone_folder: C:\prj\test-appveyor
@@ -8,14 +8,14 @@ build_script:
   - ps: tools\appveyor_win_build_whl.ps1
 
 after_build:
-  7z a win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip dist\*
+  7z a win_whl-v0.2.x-windows-b%APPVEYOR_BUILD_NUMBER%.zip dist\*
 
 artifacts:
-  - path: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
+  - path: win_whl-v0.2.x-windows-b%APPVEYOR_BUILD_NUMBER%.zip
 
 deploy:
-  release: win_whl-v0.1.0-b%APPVEYOR_BUILD_NUMBER%
-  artifact: win_whl-v0.1.0-windows-b%APPVEYOR_BUILD_NUMBER%.zip
+  release: win_whl-v0.2.x-b%APPVEYOR_BUILD_NUMBER%
+  artifact: win_whl-v0.2.x-windows-b%APPVEYOR_BUILD_NUMBER%.zip
   prerelease: true
   provider: GitHub
   auth_token:

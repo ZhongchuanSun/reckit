@@ -16,7 +16,7 @@ matrix:
 
 
 before_install:
-  - export RECKIT_VER=0.1.0
+  - export RECKIT_VER=0.2.x
   - export TRAVIS_TAG="${OS}_whl-v${RECKIT_VER}-b${TRAVIS_BUILD_NUMBER}"
   - export ZIP_FILE="${OS}_whl-v${RECKIT_VER}-${PLAT}-b${TRAVIS_BUILD_NUMBER}.tar.gz"
   - chmod 755 tools/travis_linux_build_whl.sh
