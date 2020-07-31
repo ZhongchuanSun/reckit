@@ -169,7 +169,7 @@ class Configurator(object):
             value = eval(param)
             if not isinstance(value, (str, int, float, list, tuple, bool, None.__class__)):
                 value = param
-        except NameError:
+        except (NameError, SyntaxError):
             if param.lower() == "true":
                 value = True
             elif param.lower() == "false":

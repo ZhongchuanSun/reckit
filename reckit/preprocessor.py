@@ -34,10 +34,10 @@ class Preprocessor(object):
         self.user2id = None
         self.item2id = None
         self._dir_path = None
-        self._data_name = None
-        self._split_manner = None
-        self._user_min = None
-        self._item_min = None
+        self._data_name = ""
+        self._split_manner = ""
+        self._user_min = 0
+        self._item_min = 0
 
     @typeassert(filename=str, sep=str)
     def load_data(self, filename, sep=",", columns=None):
@@ -103,11 +103,8 @@ class Preprocessor(object):
             item_min (int): The items with less interactions than 'item_min' will be filtered.
         """
 
-        if item_min > 0:
-            self.filter_item(item_min)
-
-        if user_min > 0:
-            self.filter_user(user_min)
+        self.filter_item(item_min)
+        self.filter_user(user_min)
 
     @typeassert(user_min=int)
     def filter_user(self, user_min=0):
