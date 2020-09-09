@@ -289,7 +289,7 @@ class Preprocessor(object):
 
         # save data
         filename = os.path.join(dir_path, filename)
-        sep = self._config["sep"]
+        sep = "\t"  # self._config["sep"]
         if self.all_data is not None:
             self.all_data.to_csv(filename+".all", header=False, index=False, sep=sep)
         if self.train_data is not None:
