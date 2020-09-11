@@ -63,6 +63,7 @@ class Preprocessor(object):
         self._config["sep"] = sep
 
         self.all_data = pd.read_csv(filename, sep=sep, header=None, names=self._column_name)
+        self.all_data.dropna(inplace=True)
 
         self._data_name = os.path.basename(filename).split(".")[0]
         self._dir_path = os.path.dirname(filename)
