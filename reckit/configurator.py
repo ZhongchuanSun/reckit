@@ -121,7 +121,7 @@ class Configurator(object):
         for arg_name, arg_value in zip(args[0::2], args[1::2]):
             if not arg_name.startswith("--"):
                 raise SyntaxError("Command arg must start with '--', but '%s' is not!" % arg_name)
-            self._cmd_args[arg_name] = arg_value
+            self._cmd_args[arg_name[2:]] = arg_value
 
         # cover the arguments from ini files
         for sec_name, sec_arg in self._sections.items():
