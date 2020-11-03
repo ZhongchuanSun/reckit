@@ -31,7 +31,7 @@ Topic :: Software Development :: Libraries :: Python Modules
 
 MAJOR = 0
 MINOR = 2
-MICRO = 3
+MICRO = 4
 VERSION = '%d.%d.%d' % (MAJOR, MINOR, MICRO)
 
 

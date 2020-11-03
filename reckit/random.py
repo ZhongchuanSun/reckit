@@ -1,10 +1,9 @@
 __author__ = "Zhongchuan Sun"
 __email__ = "zhongchuansun@gmail.com"
 
-__all__ = ["randint_choice"]
+__all__ = ["randint_choice", "batch_randint_choice"]
 
-from reckit.cython import _randint_choice
-import numpy as np
+from reckit.cython import pyx_randint_choice, pyx_batch_randint_choice
 
 
 def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
@@ -21,5 +20,21 @@ def randint_choice(high, size=1, replace=True, p=None, exclusion=None):
     Returns:
         int or ndarray
     """
-    samples = _randint_choice(high, size, replace, p, exclusion)
-    return np.int32(samples)
+    return pyx_randint_choice(high, size, replace, p, exclusion)
+
+
+def batch_randint_choice(high, size, replace=True, p=None, exclusion=None, thread_num=1):
+    """Sample random integers from [0, high).
+
+    Args:
+        high (int):
+        size: 1-D array_like
+        replace (bool):
+        p: 2-D array_like
+        exclusion: a list of 1-D array_like
+        thread_num (int): the number of threads
+
+    Returns:
+        list: a list of 1-D array_like sample
+    """
+    return pyx_batch_randint_choice(high, size, replace=replace, p=p, exclusion=exclusion, thread_num=thread_num)
